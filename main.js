@@ -29,15 +29,16 @@ class Blockchain {
 
 	addBlock(newBlock) {
 		newBlock.previousHash = this.getLatestBlock().hash;
+		newBlock.hash = newBlock.calculateHash();
 		this.chain.push(newBlock);
 	}
 
 	isChainValid() {
 		for (let i = 1; i < this.chain.length; i++) {
 			const currentBlock = this.chain[i];
-			const previousBlock = this.chain(i - 1);
+			const previousBlock = this.chain[i - 1];
 
-			if (currentBlock.hash !== currentBlock.calculateHash) {
+			if (currentBlock.hash !== currentBlock.calculateHash()) {
 				return false;
 			}
 
@@ -51,8 +52,11 @@ class Blockchain {
 }
 
 const rapidCoin = new Blockchain();
-rapidCoin.addBlock(new Block(1, new Date(), { amount: 4 }));
-rapidCoin.addBlock(new Block(2, new Date(), { amount: 80 }));
-rapidCoin.addBlock(new Block(4, new Date(), { amount: 1000 }));
+rapidCoin.addBlock(new Block(1, '2022/10/01', { amount: 4 }));
+rapidCoin.addBlock(new Block(2, '2022/10/02', { amount: 80 }));
+rapidCoin.addBlock(new Block(4, '2022/10/03', { amount: 1000 }));
 
 console.log('first', JSON.stringify(rapidCoin, null, 2));
+console.log('Is blockchain valid?', rapidCoin.isChainValid());
+rapidCoin.chain[1].data = { amount: 60 };
+console.log('Is blockchain valid?', rapidCoin.isChainValid());
